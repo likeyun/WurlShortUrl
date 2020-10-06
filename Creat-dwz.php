@@ -2,8 +2,8 @@
 header("Content-type:application/json");
 
 // 定义APPID、APPSECRET
-$appid = "wx1c1b527364043260";
-$appsecret = "8fac9857272eadd677021e32683bbcdb";
+$appid = "xxx";
+$appsecret = "xxx";
 
 // 获取access_token和jsapi_ticket
 function getToken(){
