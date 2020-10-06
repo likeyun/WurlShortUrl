@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>w.url.cn短网址生成</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container mt-3">
+  <h3>w.url.cn短网址生成</h3>
+  <p>w.url.cn是调用微信公众号的API接口，可以使用测试号的APPID进行调用。</p>
+  <form role="form" action="##" onsubmit="return false" method="post" id="CreatDwz">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">长链接</span>
+      </div>
+      <input type="text" class="form-control" placeholder="请粘贴长链接" name="long_url">
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="CreatDwz();" style="background: #333;border:none;">立即生成</button>
+  </form>
+
+  <!-- 操作提示 -->
+  <br/><div class="Result"></div>
+
+  <!-- 二维码 -->
+  <br/><div class="ewm" style="width: 260px;height: 260px;"></div>
+</div>
+
+<script type="text/javascript">
+  // 关闭提示
+  function closesctips(){
+    $(".container .Result").css('display','none');
+  }
+
+  // Ajax提交
+  function CreatDwz(){
+      $.ajax({
+          type: "GET",
+          url: "Creat-dwz.php",
+          data: $('#CreatDwz').serialize(),
+          success: function (data) {
+            // 创建成功
+            if (data.result == "100") {
+               $(".container .Result").css('display','block');
+               $(".container .Result").html('<div class="alert alert-success"><strong>'+data.dwz+'</strong></div>');
+               $(".container .ewm").css('display','block');
+               $(".container .ewm").html('<img src="https://api.pwmqr.com/qrcode/create/?url='+data.dwz+'" width="260"/>');
+            }else{
+               $(".container .Result").css('display','block');
+               $(".container .Result").html('<div class="alert alert-danger"><strong>'+data.msg+'</strong></div>');
+               setTimeout('closesctips()', 2000);
+            }
+          },
+          error : function(data) {
+            // 创建失败
+             $(".container .Result").css('display','block');
+             $(".container .Result").html('<div class="alert alert-danger"><strong>服务器发生错误</strong></div>');
+             setTimeout('closesctips()', 2000);
+          }
+      });
+  }
+</script>
+
+</body>
+</html>
